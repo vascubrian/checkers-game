@@ -19,10 +19,11 @@ org.openjfx:javafx-maven-plugin:0.0.3:run
 
 Tests are executed by the `mvn clean test verify -Dspring.profiles.active=ci-test -Dspring.config.location=./config/` command
 
-## Versioning
-
+## Versioning and other information
+For more information [youtube url](https://www.youtube.com/watch?v=jHUBPCDxIl0).
 We use [Semantic versioning](http://semver.org/). For the versions available, see the [tags on this repository](https://github.com/Leensb/Checkers/releases).
 
 ## Author
 
-* **Leen Wishahi** - *Application architecture and development*
+* **Brian Twijukye** - *Application architecture and development*
+
