@@ -1,3 +1,9 @@
+/**
+ * Copyright 2020 Me u SoftwarePlus (meusoftwareplus.com)
+ * Created on: 04-APR-2020
+ * Created by: Brian Twijukye
+ * Edited by:
+ */
 package com.checkers.open.utils;
 
 import com.checkers.open.enumeration.GamePlayer;

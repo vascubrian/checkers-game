@@ -1,3 +1,9 @@
+/**
+ * Copyright 2020 Me u SoftwarePlus (meusoftwareplus.com)
+ * Created on: 04-APR-2020
+ * Created by: Brian Twijukye
+ * Edited by:
+ */
 package com.checkers.open.controllers;
 
 import com.checkers.open.events.handler.BorderPaneListener;
@@ -11,15 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author Leen Wishahi
- */
 public class HomeController implements Initializable {
 
     private @FXML
