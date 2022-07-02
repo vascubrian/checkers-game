@@ -9,7 +9,7 @@ package com.checkers.open.enumeration;
 import java.io.Serializable;
 
 public enum GamePlayer implements Serializable {
-    COMPUTER("COMPUTER"), HUMAN("HUMAN"), FREE("FREE"), HUMANKING("HUMANKING"), COMPUTERKING("COMPUTERKING");
+    COMPUTER("COMPUTER"), HUMAN_TWO("HUMAN_TWO"), HUMAN_TWO_KING("HUMAN_TWO_KING"), HUMAN_ONE("HUMAN_ONE"), HUMAN_ONE_KING("HUMAN_ONE_KING"), HUMAN("HUMAN"), FREE("FREE"), HUMANKING("HUMANKING"), COMPUTERKING("COMPUTERKING");
     String playerFlag;
 
     private GamePlayer(String playerFlag) {

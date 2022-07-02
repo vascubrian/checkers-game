@@ -22,11 +22,12 @@ import javafx.scene.input.MouseEvent;
 public class GameLevelController implements Initializable, EventHandler<MouseEvent> {
 
     @FXML
-    private Button onePlayer, twoPlayers, viewRules;
+    private Button onePlayer, twoHumanPlayers, twoPlayers, viewRules;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         onePlayer.setOnMousePressed(this);
+        twoHumanPlayers.setOnMousePressed(this);
         twoPlayers.setOnMousePressed(this);
         viewRules.setOnMousePressed(this);
     }
@@ -36,7 +37,9 @@ public class GameLevelController implements Initializable, EventHandler<MouseEve
         if (t.getSource() == onePlayer) {
             Singleton.getInstance().setGameLevel(GameLevel.ONEPLAYER.getGameLevel());
             loadFmxl("HomeView");
-
+        } else if (t.getSource() == twoHumanPlayers) {
+            Singleton.getInstance().setGameLevel(GameLevel.TWOHUMANPLAYER.getGameLevel());
+            loadFmxl("HomeView");
         } else if (t.getSource() == twoPlayers) {
 
             Singleton.getInstance().setGameLevel(GameLevel.TWOPLAYERS.getGameLevel());

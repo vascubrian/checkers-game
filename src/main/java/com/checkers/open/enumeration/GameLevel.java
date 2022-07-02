@@ -9,7 +9,7 @@ package com.checkers.open.enumeration;
 import java.io.Serializable;
 
 public enum GameLevel implements Serializable {
-    ONEPLAYER("ONEPLAYER"), TWOPLAYERS("TWOPLAYERS");
+    ONEPLAYER("ONEPLAYER"), TWOHUMANPLAYER("TWOHUMANPLAYER"), TWOPLAYERS("TWOPLAYERS");
     String gameLevel;
 
     private GameLevel(String gameLevel) {

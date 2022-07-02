@@ -1,7 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * https://www.freelancer.com/u/vascubrian
+ * Created on: 04-APR-2020
+ * Created by: Brian Twijukye
+ * Edited by:
  */
 package checkers.open;
 

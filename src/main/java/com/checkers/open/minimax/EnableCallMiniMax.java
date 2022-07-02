@@ -93,6 +93,10 @@ public class EnableCallMiniMax implements CallMiniMax {
     public List<String> returnNodeDepth(String boardPane, String PlayerFlag) {
         if (PlayerFlag.equals(GamePlayer.HUMANKING.getPlayerFlag())) {
             return KingnodeDepth.get(boardPane);
+        } else if (PlayerFlag.equals(GamePlayer.HUMAN_ONE.getPlayerFlag())) {
+            return KingnodeDepth.get(boardPane);
+        } else if (PlayerFlag.equals(GamePlayer.HUMAN_TWO.getPlayerFlag())) {
+            return computerDepth.get(boardPane);
         } else {
             return nodeDepth.get(boardPane);
         }
