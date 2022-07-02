@@ -27,7 +27,7 @@ User freindly board which seperates two players top and bottom
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Built With
-* [org.openjfx](https://mvnrepository.com/artifact/org.openjfx/javafx/11) - JavaFX allows you to create Java applications with a modern, hardware-accelerated user interface that is highly portable.
+* org.openjfx](https://mvnrepository.com/artifact/org.openjfx/javafx/11 - JavaFX allows you to create Java applications with a modern, hardware-accelerated user interface that is highly portable.
 ### Prerequisites
 
 JDK 11
@@ -40,6 +40,6 @@ org.openjfx:javafx-maven-plugin:0.0.3:run
 ## Running the tests
 Run  checkers.open.BoardPaneTests
 ## Author
-* [https://www.linkedin.com/in/brian-twijukye-61a44399/?originalSubdomain=ug) - LinkedIn
+* https://www.linkedin.com/in/brian-twijukye-61a44399/?originalSubdomain=ug - LinkedIn
 * **Brian Twijukye** - *Application architecture and development*
 
