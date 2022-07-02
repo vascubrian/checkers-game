@@ -1,5 +1,28 @@
 # Checkers
-Is a javafx application that contains AI features and human interaction.
+Checkers game with three Game levels : Human Player Game Level , Human Player Vs Human Player  Game Level, Human Player Vs Computer  Game Level. This checkers game follows standard checkers game rules.
+
+## Human Player Game Level
+
+Human player can jump over opponents only if there’s an unoccupied adjacent square 
+To win, you must execute all computer pieces 
+
+## Human Player Vs Human Player  Game Level
+
+Human and Human player can jump over opponents only if there’s an unoccupied adjacent square 
+
+Either human or Human must execute all computer pieces to win.
+
+## Human Player Vs Computer  Game Level
+
+Human and computer player can jump over opponents only if there’s an unoccupied adjacent square 
+
+Either human or computer must execute all computer pieces to win.
+![image](https://user-images.githubusercontent.com/17808858/177003788-f6757ad0-1c1f-467b-8a55-04579d9561e3.png)
+
+## Checkers Game Board 
+User freindly board which seperates two players top and bottom 
+![image](https://user-images.githubusercontent.com/17808858/177003845-1585c37e-f4b8-492d-901e-3aa33b60a664.png)
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -24,6 +47,6 @@ For more information [youtube url](https://www.youtube.com/watch?v=jHUBPCDxIl0).
 We use [Semantic versioning](http://semver.org/). For the versions available, see the [tags on this repository](https://github.com/Leensb/Checkers/releases).
 
 ## Author
-
+* [https://www.linkedin.com/in/brian-twijukye-61a44399/?originalSubdomain=ug) - LinkedIn
 * **Brian Twijukye** - *Application architecture and development*
 
