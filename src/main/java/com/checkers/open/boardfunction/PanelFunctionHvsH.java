@@ -5,7 +5,6 @@
  * Edited by:
  */
 package com.checkers.open.boardfunction;
-
 import com.checkers.open.enumeration.GamePlayer;
 import com.checkers.open.enumeration.PanelFlag;
 import com.checkers.open.king.ComputerKing;
@@ -13,13 +12,14 @@ import com.checkers.open.king.HumanKing;
 import com.checkers.open.minimax.EnableCallMiniMax;
 import com.checkers.open.paneneighbours.ComputerNeighbourHandler;
 import com.checkers.open.paneneighbours.HumanNeighbourHandler;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PanelFunction extends EnableCallMiniMax implements FunctionHandler {
+public class PanelFunctionHvsH extends EnableCallMiniMax implements FunctionHandlerHvsH {
 
     private Map<String, String> panelStatus;
 
@@ -33,6 +33,10 @@ public class PanelFunction extends EnableCallMiniMax implements FunctionHandler 
 
     private HashMap<String, List<String>> computerKings;
 
+    // check game player
+    private List<String> returnNodeDepth = null;
+    private List<String> boardNeighbours = null;
+
     @Override
     public void updatePanelStatus(String panelName, String panelFlag) {
         panelStatus.put(panelName, panelFlag);
@@ -44,7 +48,7 @@ public class PanelFunction extends EnableCallMiniMax implements FunctionHandler 
     }
 
     @Override
-    public void StandingPanelStatus() {
+    public void humanStandingPanelStatus() {
         panelStatus = new HashMap<>();
         panelStatus.put("boardPane1", PanelFlag.LOCKED.getPaneStaus());
         panelStatus.put("boardPane2", PanelFlag.LOCKED.getPaneStaus());
@@ -54,10 +58,10 @@ public class PanelFunction extends EnableCallMiniMax implements FunctionHandler 
         panelStatus.put("boardPane6", PanelFlag.LOCKED.getPaneStaus());
         panelStatus.put("boardPane7", PanelFlag.LOCKED.getPaneStaus());
         panelStatus.put("boardPane8", PanelFlag.LOCKED.getPaneStaus());
-        panelStatus.put("boardPane9", PanelFlag.LOCKED.getPaneStaus());
-        panelStatus.put("boardPane10", PanelFlag.LOCKED.getPaneStaus());
-        panelStatus.put("boardPane11", PanelFlag.LOCKED.getPaneStaus());
-        panelStatus.put("boardPane12", PanelFlag.LOCKED.getPaneStaus());
+        panelStatus.put("boardPane9", PanelFlag.MOVE.getPaneStaus());
+        panelStatus.put("boardPane10", PanelFlag.MOVE.getPaneStaus());
+        panelStatus.put("boardPane11", PanelFlag.MOVE.getPaneStaus());
+        panelStatus.put("boardPane12", PanelFlag.MOVE.getPaneStaus());
         panelStatus.put("boardPane13", PanelFlag.EMPTY.getPaneStaus());
         panelStatus.put("boardPane14", PanelFlag.EMPTY.getPaneStaus());
         panelStatus.put("boardPane15", PanelFlag.EMPTY.getPaneStaus());
@@ -91,20 +95,20 @@ public class PanelFunction extends EnableCallMiniMax implements FunctionHandler 
     }
 
     @Override
-    public void StandingPlayerStatus() {
+    public void humanStandingPlayerStatus() {
         playerStatus = new HashMap<>();
-        playerStatus.put("boardPane1", GamePlayer.COMPUTER.getPlayerFlag());
-        playerStatus.put("boardPane2", GamePlayer.COMPUTER.getPlayerFlag());
-        playerStatus.put("boardPane3", GamePlayer.COMPUTER.getPlayerFlag());
-        playerStatus.put("boardPane4", GamePlayer.COMPUTER.getPlayerFlag());
-        playerStatus.put("boardPane5", GamePlayer.COMPUTER.getPlayerFlag());
-        playerStatus.put("boardPane6", GamePlayer.COMPUTER.getPlayerFlag());
-        playerStatus.put("boardPane7", GamePlayer.COMPUTER.getPlayerFlag());
-        playerStatus.put("boardPane8", GamePlayer.COMPUTER.getPlayerFlag());
-        playerStatus.put("boardPane9", GamePlayer.COMPUTER.getPlayerFlag());
-        playerStatus.put("boardPane10", GamePlayer.COMPUTER.getPlayerFlag());
-        playerStatus.put("boardPane11", GamePlayer.COMPUTER.getPlayerFlag());
-        playerStatus.put("boardPane12", GamePlayer.COMPUTER.getPlayerFlag());
+        playerStatus.put("boardPane1", GamePlayer.HUMAN_TWO.getPlayerFlag());
+        playerStatus.put("boardPane2", GamePlayer.HUMAN_TWO.getPlayerFlag());
+        playerStatus.put("boardPane3", GamePlayer.HUMAN_TWO.getPlayerFlag());
+        playerStatus.put("boardPane4", GamePlayer.HUMAN_TWO.getPlayerFlag());
+        playerStatus.put("boardPane5", GamePlayer.HUMAN_TWO.getPlayerFlag());
+        playerStatus.put("boardPane6", GamePlayer.HUMAN_TWO.getPlayerFlag());
+        playerStatus.put("boardPane7", GamePlayer.HUMAN_TWO.getPlayerFlag());
+        playerStatus.put("boardPane8", GamePlayer.HUMAN_TWO.getPlayerFlag());
+        playerStatus.put("boardPane9", GamePlayer.HUMAN_TWO.getPlayerFlag());
+        playerStatus.put("boardPane10", GamePlayer.HUMAN_TWO.getPlayerFlag());
+        playerStatus.put("boardPane11", GamePlayer.HUMAN_TWO.getPlayerFlag());
+        playerStatus.put("boardPane12", GamePlayer.HUMAN_TWO.getPlayerFlag());
         playerStatus.put("boardPane13", GamePlayer.FREE.getPlayerFlag());
         playerStatus.put("boardPane14", GamePlayer.FREE.getPlayerFlag());
         playerStatus.put("boardPane15", GamePlayer.FREE.getPlayerFlag());
@@ -113,23 +117,23 @@ public class PanelFunction extends EnableCallMiniMax implements FunctionHandler 
         playerStatus.put("boardPane18", GamePlayer.FREE.getPlayerFlag());
         playerStatus.put("boardPane19", GamePlayer.FREE.getPlayerFlag());
         playerStatus.put("boardPane20", GamePlayer.FREE.getPlayerFlag());
-        playerStatus.put("boardPane21", GamePlayer.HUMAN.getPlayerFlag());
-        playerStatus.put("boardPane22", GamePlayer.HUMAN.getPlayerFlag());
-        playerStatus.put("boardPane23", GamePlayer.HUMAN.getPlayerFlag());
-        playerStatus.put("boardPane24", GamePlayer.HUMAN.getPlayerFlag());
-        playerStatus.put("boardPane25", GamePlayer.HUMAN.getPlayerFlag());
-        playerStatus.put("boardPane26", GamePlayer.HUMAN.getPlayerFlag());
-        playerStatus.put("boardPane27", GamePlayer.HUMAN.getPlayerFlag());
-        playerStatus.put("boardPane28", GamePlayer.HUMAN.getPlayerFlag());
-        playerStatus.put("boardPane29", GamePlayer.HUMAN.getPlayerFlag());
-        playerStatus.put("boardPane30", GamePlayer.HUMAN.getPlayerFlag());
-        playerStatus.put("boardPane31", GamePlayer.HUMAN.getPlayerFlag());
-        playerStatus.put("boardPane32", GamePlayer.HUMAN.getPlayerFlag());
+        playerStatus.put("boardPane21", GamePlayer.HUMAN_ONE.getPlayerFlag());
+        playerStatus.put("boardPane22", GamePlayer.HUMAN_ONE.getPlayerFlag());
+        playerStatus.put("boardPane23", GamePlayer.HUMAN_ONE.getPlayerFlag());
+        playerStatus.put("boardPane24", GamePlayer.HUMAN_ONE.getPlayerFlag());
+        playerStatus.put("boardPane25", GamePlayer.HUMAN_ONE.getPlayerFlag());
+        playerStatus.put("boardPane26", GamePlayer.HUMAN_ONE.getPlayerFlag());
+        playerStatus.put("boardPane27", GamePlayer.HUMAN_ONE.getPlayerFlag());
+        playerStatus.put("boardPane28", GamePlayer.HUMAN_ONE.getPlayerFlag());
+        playerStatus.put("boardPane29", GamePlayer.HUMAN_ONE.getPlayerFlag());
+        playerStatus.put("boardPane30", GamePlayer.HUMAN_ONE.getPlayerFlag());
+        playerStatus.put("boardPane31", GamePlayer.HUMAN_ONE.getPlayerFlag());
+        playerStatus.put("boardPane32", GamePlayer.HUMAN_ONE.getPlayerFlag());
     }
 
     @Override
     public List<String> getHumanNeighbours(String panelName) {
-        if (getPlayerStatus(panelName).equals(GamePlayer.HUMANKING.getPlayerFlag())) {
+        if (getPlayerStatus(panelName).equals(GamePlayer.HUMAN_ONE_KING.getPlayerFlag())) {
             return humanKings.get(panelName);
         } else {
             return mapHumanNeighbours.get(panelName);
@@ -138,7 +142,11 @@ public class PanelFunction extends EnableCallMiniMax implements FunctionHandler 
 
     @Override
     public List<String> getComputerNeighbours(String panelName) {
-        return mapComputerNeighbours.get(panelName);
+        if (getPlayerStatus(panelName).equals(GamePlayer.HUMAN_TWO_KING.getPlayerFlag())) {
+            return computerKings.get(panelName);
+        } else {
+            return mapComputerNeighbours.get(panelName);
+        }
     }
 
     @Override
@@ -293,22 +301,47 @@ public class PanelFunction extends EnableCallMiniMax implements FunctionHandler 
      *
      * @param clickedNode : selected node
      * @param neighbourNode : target node
+     * @param gamePlayerStatus : game player status
      * @return : return depth node of the clicked node
      */
     @Override
-    public String getScoreNode(String clickedNode, String neighbourNode) {
+    public String getScoreNode(String clickedNode, String neighbourNode, String gamePlayerStatus) {
+        if (gamePlayerStatus.equals(GamePlayer.HUMAN_TWO.getPlayerFlag()) || gamePlayerStatus.equals(GamePlayer.HUMAN_TWO_KING.getPlayerFlag())) {
+            returnNodeDepth = returnComputerNodeDepth(clickedNode, gamePlayerStatus);
+            boardNeighbours = getComputerNeighbours(neighbourNode);
+        } else {
+            returnNodeDepth = returnNodeDepth(clickedNode, gamePlayerStatus);
+            boardNeighbours = getHumanNeighbours(neighbourNode);
+        }
         String scoreNode = "";
         outerloop:
-        for (String depthNodes : returnNodeDepth(clickedNode, getPlayerStatus(clickedNode))) {
+        for (String depthNodes : returnNodeDepth) {
             if (getPanelStatus(depthNodes).equals(PanelFlag.EMPTY.getPaneStaus())) {
-                for (String neighbourCheck : getKingDepthNeighbours(clickedNode, depthNodes)) {
-                    if (neighbourCheck.equals(neighbourNode)) {
-                        scoreNode = depthNodes;
-                        break outerloop;
+                if ((gamePlayerStatus.equals(GamePlayer.HUMAN_TWO.getPlayerFlag()) || gamePlayerStatus.equals(GamePlayer.HUMAN_ONE.getPlayerFlag())) && boardNeighbours != null) {
+                    for (String neighbourCheck : boardNeighbours) {
+                        if (neighbourCheck.equals(depthNodes)) {
+                            scoreNode = depthNodes;
+                            break outerloop;
+                        }
+                    }
+                } else if (gamePlayerStatus.equals(GamePlayer.HUMAN_ONE_KING.getPlayerFlag())) {
+                    for (String neighbourCheck : getKingDepthNeighbours(clickedNode, depthNodes)) {
+                        if (neighbourCheck.equals(neighbourNode)) {
+                            scoreNode = depthNodes;
+                            break outerloop;
+                        }
+                    }
+                } else if (gamePlayerStatus.equals(GamePlayer.HUMAN_TWO_KING.getPlayerFlag())) {
+                    for (String neighbourCheck : getKingComputerDepthNeighbours(clickedNode, depthNodes)) {
+                        if (neighbourCheck.equals(neighbourNode)) {
+                            scoreNode = depthNodes;
+                            break outerloop;
+                        }
                     }
                 }
             }
         }
+
         return scoreNode;
     }
 
@@ -400,14 +433,10 @@ public class PanelFunction extends EnableCallMiniMax implements FunctionHandler 
     public List<String> getKingDepthNeighbours(String clickedNode, String depthNode) {
         Integer clickedNodeValue = Integer.parseInt(clickedNode.replaceAll("boardPane", ""));
         Integer depthNodeValue = Integer.parseInt(depthNode.replaceAll("boardPane", ""));
-        if (getPlayerStatus(clickedNode).equals(GamePlayer.HUMANKING.getPlayerFlag())) {
-            if (clickedNodeValue > depthNodeValue) {
-                return getComputerNeighbours(depthNode);
-            } else {
-                return getHumanNeighbours(depthNode);
-            }
-        } else {
+        if (clickedNodeValue > depthNodeValue) {
             return getComputerNeighbours(depthNode);
+        } else {
+            return getHumanNeighbours(depthNode);
         }
     }
 
@@ -415,12 +444,8 @@ public class PanelFunction extends EnableCallMiniMax implements FunctionHandler 
     public List<String> getKingComputerDepthNeighbours(String clickedNode, String depthNode) {
         Integer clickedNodeValue = Integer.parseInt(clickedNode.replaceAll("boardPane", ""));
         Integer depthNodeValue = Integer.parseInt(depthNode.replaceAll("boardPane", ""));
-        if (getPlayerStatus(clickedNode).equals(GamePlayer.COMPUTERKING.getPlayerFlag())) {
-            if (clickedNodeValue > depthNodeValue) {
-                return getHumanNeighbours(depthNode);
-            } else {
-                return getComputerNeighbours(depthNode);
-            }
+        if (clickedNodeValue > depthNodeValue) {
+            return getComputerNeighbours(depthNode);
         } else {
             return getHumanNeighbours(depthNode);
         }
@@ -429,6 +454,7 @@ public class PanelFunction extends EnableCallMiniMax implements FunctionHandler 
     /**
      * getComputerScoreNode :Checks nodes with red or human player, Gets red or
      * human neighbors which are empty and depth node to board pane node
+     *
      * @return : returns array list of the three target execute nodes
      */
     @Override
@@ -438,7 +464,7 @@ public class PanelFunction extends EnableCallMiniMax implements FunctionHandler 
         outerloop:
         for (String allMovable : allComputerPlayersMovePane()) {
             for (String topNeighours : getComputerNeighbours(allMovable)) {
-                if (getPlayerStatus(topNeighours).equals(GamePlayer.HUMAN.getPlayerFlag())) {
+                if (getPlayerStatus(topNeighours).equals(GamePlayer.HUMAN_ONE.getPlayerFlag())) {
                     if (!checkLoopForComputer(allMovable, topNeighours).isEmpty()) {
                         computeNodeMove = checkLoopForComputer(allMovable, topNeighours);
                         break outerloop;
@@ -449,13 +475,14 @@ public class PanelFunction extends EnableCallMiniMax implements FunctionHandler 
         }
         return computeNodeMove;
     }
+
     /**
      * heckLoopForComputer: checks empty neighbors and return three target nodes
-     * allMovable - board pane node
-     * topNeighours - board pane neighbour
+     * allMovable - board pane node topNeighours - board pane neighbour
      * lowerNeighours - target node
+     *
      * @param allMovable : target node
-     * @param topNeighours : human or red node 
+     * @param topNeighours : human or red node
      * @return : returns array list of the three target execute nodes
      */
     private List<String> checkLoopForComputer(String allMovable, String topNeighours) {

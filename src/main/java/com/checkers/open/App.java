@@ -1,11 +1,10 @@
 /**
- * Copyright 2020 Me u SoftwarePlus (meusoftwareplus.com)
+ * https://www.freelancer.com/u/vascubrian
  * Created on: 04-APR-2020
  * Created by: Brian Twijukye
  * Edited by:
  */
 package com.checkers.open;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

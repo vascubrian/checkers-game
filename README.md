@@ -1,5 +1,27 @@
 # Checkers
-Is a javafx application that contains AI features and human interaction.
+Checkers game with three Game levels : Human Player Game Level , Human Player Vs Human Player  Game Level, Human Player Vs Computer  Game Level. This checkers game follows standard checkers game rules.
+
+## Human Player Game Level
+
+Human player can jump over opponents only if there’s an unoccupied adjacent square 
+To win, you must execute all computer pieces 
+
+## Human Player Vs Human Player  Game Level
+
+Human and Human player can jump over opponents only if there’s an unoccupied adjacent square 
+
+Either human or Human must execute all computer pieces to win.
+
+## Human Player Vs Computer  Game Level
+
+Human and computer player can jump over opponents only if there’s an unoccupied adjacent square 
+
+Either human or computer must execute all computer pieces to win.
+![image](https://user-images.githubusercontent.com/17808858/177004064-1d08ba81-2e24-4fe6-8686-84b0db7275cd.png)
+## Checkers Game Board 
+User freindly board which seperates two players top and bottom 
+![image](https://user-images.githubusercontent.com/17808858/177004012-15d625da-aed2-432d-b5f1-c5d599a6015c.png)
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -16,14 +38,8 @@ JDK 11
 org.openjfx:javafx-maven-plugin:0.0.3:run
 ```
 ## Running the tests
-
-Tests are executed by the `mvn clean test verify -Dspring.profiles.active=ci-test -Dspring.config.location=./config/` command
-
-## Versioning and other information
-For more information [youtube url](https://www.youtube.com/watch?v=jHUBPCDxIl0).
-We use [Semantic versioning](http://semver.org/). For the versions available, see the [tags on this repository](https://github.com/Leensb/Checkers/releases).
-
+Run  checkers.open.BoardPaneTests
 ## Author
-
+* [https://www.linkedin.com/in/brian-twijukye-61a44399/?originalSubdomain=ug) - LinkedIn
 * **Brian Twijukye** - *Application architecture and development*
 

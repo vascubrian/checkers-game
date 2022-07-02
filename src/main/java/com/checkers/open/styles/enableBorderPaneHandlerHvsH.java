@@ -7,16 +7,18 @@
 package com.checkers.open.styles;
 
 import com.checkers.open.App;
-import com.checkers.open.boardfunction.PanelFunction;
-import com.checkers.open.enumeration.GameLevel;
+import com.checkers.open.boardfunction.PanelFunctionHvsH;
 import com.checkers.open.enumeration.GamePlayer;
 import com.checkers.open.enumeration.PanelFlag;
 import com.checkers.open.events.handler.OtherHomeComponents;
 import com.checkers.open.model.Singleton;
 import com.checkers.open.utils.BoardHandling;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -25,15 +27,18 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
-public class enableBorderPaneHandler implements BorderPaneHandler, EventHandler<MouseEvent> {
+public class enableBorderPaneHandlerHvsH implements BorderPaneHandlerHvsH, EventHandler<MouseEvent> {
 
     private final BorderPane passBoardPane;
 
     private final String parentBorderPane;
 
-    private final PanelFunction panelFunction;
+    private final PanelFunctionHvsH panelFunction;
 
-    public enableBorderPaneHandler(BorderPane passBoardPane, String parentBorderPane, PanelFunction panelFunction) {
+    private List<String> boardNeighbours = null;
+    private String scorePlayer = "", checkStartCore = "";
+
+    public enableBorderPaneHandlerHvsH(BorderPane passBoardPane, String parentBorderPane, PanelFunctionHvsH panelFunction) {
         this.passBoardPane = passBoardPane;
         this.parentBorderPane = parentBorderPane;
         this.panelFunction = panelFunction;
@@ -46,44 +51,52 @@ public class enableBorderPaneHandler implements BorderPaneHandler, EventHandler<
         // enable oncick components
         boolean enableOnClick = nodeStyle.equals("ComputerPlay") || nodeStyle.equals("HumanPlayer") || nodeStyle.equals("moveTargetPane") || nodeStyle.equals("HumanKing") || nodeStyle.equals("ComputerKing");
         if (t.getSource() == passBoardPane && enableOnClick) {
+            // handle two human players , select board panel neighbours
+            if (panelFunction.getPlayerStatus(passBoardPane.getId()).equals(GamePlayer.HUMAN_TWO.getPlayerFlag()) || panelFunction.getPlayerStatus(passBoardPane.getId()).equals(GamePlayer.HUMAN_TWO_KING.getPlayerFlag())) {
+                boardNeighbours = panelFunction.getComputerNeighbours(passBoardPane.getId());
+                scorePlayer = GamePlayer.HUMAN_ONE.getPlayerFlag();
+            } else {
+                boardNeighbours = panelFunction.getHumanNeighbours(passBoardPane.getId());
+                scorePlayer = GamePlayer.HUMAN_TWO.getPlayerFlag();
+            }
+            // continue to handle select
             if (panelFunction.getPanelStatus(passBoardPane.getId()).equals(PanelFlag.EMPTY.getPaneStaus())) {
+                // get scene borderpane
                 Scene scene = App.scene;
                 BorderPane nodeToFind = (BorderPane) scene.lookup("#" + parentBorderPane + "");
                 nodeToFind.setCenter(null);
                 // reset human player css
                 interceptMovePlayerStatus(parentBorderPane, passBoardPane);
-
                 executeHumanNodeMove(parentBorderPane, passBoardPane.getId());
                 // clear move
                 moveUtils(passBoardPane.getId());
             } else if (panelFunction.getPanelStatus(passBoardPane.getId()).equals(PanelFlag.MOVE.getPaneStaus())) {
-                panelFunction.getHumanNeighbours(passBoardPane.getId()).forEach((neighbours) -> {
-                    String checkStartCore = panelFunction.getScoreNode(passBoardPane.getId(), neighbours);;
-                    if (panelFunction.getPanelStatus(neighbours).equals(PanelFlag.LOCKED.getPaneStaus()) && panelFunction.getPlayerStatus(neighbours).equals(GamePlayer.COMPUTER.getPlayerFlag()) && !"".equals(checkStartCore)) {
-                        enableHighlightedNodes(checkStartCore, passBoardPane.getId());
+                // board neighbours
+                boardNeighbours.forEach((neighbours) -> {
+                    // check score node first
+                    checkStartCore = panelFunction.getPlayerStatus(neighbours).equals(scorePlayer) ? panelFunction.getScoreNode(passBoardPane.getId(), neighbours, panelFunction.getPlayerStatus(passBoardPane.getId())) : "";
+                    if (!"".equals(checkStartCore)) {
+                        BoardHandling.enableHighlightedNodes(checkStartCore, passBoardPane.getId(), panelFunction);
                         // set score flag
                         Singleton.getInstance().setFlagNode(neighbours);
                         Singleton.getInstance().setScoreFlag(checkStartCore);
-
                     } else {
                         if (panelFunction.getPanelStatus(neighbours).equals(PanelFlag.EMPTY.getPaneStaus())) {
-                            enableHighlightedNodes(neighbours, passBoardPane.getId());
+                            BoardHandling.enableHighlightedNodes(neighbours, passBoardPane.getId(), panelFunction);
                         }
                     }
                 });
-
             } else {
-
-                panelFunction.getHumanNeighbours(passBoardPane.getId()).forEach((neighbours) -> {
-                    String checkStartCore = panelFunction.getScoreNode(passBoardPane.getId(), neighbours);
-                    if (panelFunction.getPanelStatus(neighbours).equals(PanelFlag.LOCKED.getPaneStaus()) && panelFunction.getPlayerStatus(neighbours).equals(GamePlayer.COMPUTER.getPlayerFlag()) && !"".equals(checkStartCore)) {
-                        enableHighlightedNodes(checkStartCore, passBoardPane.getId());
+                boardNeighbours.forEach((neighbours) -> {
+                    // check score node first
+                    checkStartCore = panelFunction.getPlayerStatus(neighbours).equals(scorePlayer) ? panelFunction.getScoreNode(passBoardPane.getId(), neighbours, panelFunction.getPlayerStatus(passBoardPane.getId())) : "";
+                    if (!"".equals(checkStartCore)) {
+                        BoardHandling.enableHighlightedNodes(checkStartCore, passBoardPane.getId(), panelFunction);
                         // set score flag
                         Singleton.getInstance().setFlagNode(neighbours);
                         Singleton.getInstance().setScoreFlag(checkStartCore);
                     }
                 });
-
             }
         }
     }
@@ -154,15 +167,9 @@ public class enableBorderPaneHandler implements BorderPaneHandler, EventHandler<
 
     @Override
     public void moveUtils(String passBoardPane) {
-
         //unlock neighbours;
         unlockHumanNeighbours();
-
         unlockHumanKingNeighbours(passBoardPane);
-
-        // move computer node
-        createComputerMove(passBoardPane);
-
         // clearBoardPane
         clearBoardPane();
         // reset score flags
@@ -181,113 +188,28 @@ public class enableBorderPaneHandler implements BorderPaneHandler, EventHandler<
 
     @Override
     public void unlockHumanKingNeighbours(String boardPane) {
-        if (panelFunction.getPlayerStatus(boardPane).equals(GamePlayer.HUMANKING.getPlayerFlag())) {
+        if (panelFunction.getPlayerStatus(boardPane).equals(GamePlayer.HUMAN_ONE_KING.getPlayerFlag())) {
             for (String displayboardPane : panelFunction.getHumanNeighbours(boardPane)) {
                 if (panelFunction.getPanelStatus(displayboardPane).equals(PanelFlag.EMPTY.getPaneStaus())) {
                     panelFunction.updatePanelStatus(boardPane, PanelFlag.MOVE.getPaneStaus());
                     break;
                 }
             }
-        }
-
-    }
-
-    /**
-     * createComputerMove :it get depth node of computer check node whether it's
-     * computer player and movable, if it finds one and breaks the loop Finally
-     * call execute move class
-     *
-     * @param passBoardPane
-     */
-    @Override
-    public void createComputerMove(String passBoardPane) {
-        if (isNodeNotEmpty(passBoardPane)) {
-            for (String displayBoardPane : panelFunction.returnNodeDepth(passBoardPane, panelFunction.getPlayerStatus(passBoardPane))) {
-                if (panelFunction.getPlayerStatus(displayBoardPane).equals(GamePlayer.COMPUTER.getPlayerFlag())) {
-                    if (isNodeHasEmptyDepth(displayBoardPane)) {
-                        executeComputerMove(displayBoardPane);
-                        break;
-                    }
-                }
-            }
-        } else {
-            for (String movablePanel : panelFunction.allComputerPlayersMovePane()) {
-                if (isNodeHasEmptyDepth(movablePanel)) {
-                    if (panelFunction.getPlayerStatus(movablePanel).equals(GamePlayer.COMPUTER.getPlayerFlag())) {
-                        randomComputerMove(movablePanel);
-                        break;
-                    }
+        } else if (panelFunction.getPlayerStatus(boardPane).equals(GamePlayer.HUMAN_TWO_KING.getPlayerFlag())) {
+            for (String displayboardPane : panelFunction.getComputerNeighbours(boardPane)) {
+                if (panelFunction.getPanelStatus(displayboardPane).equals(PanelFlag.EMPTY.getPaneStaus())) {
+                    panelFunction.updatePanelStatus(boardPane, PanelFlag.MOVE.getPaneStaus());
+                    break;
                 }
             }
         }
-    }
-
-    @Override
-    public void randomComputerMove(String boardPane) {
-        // move any computer node
-        if (Singleton.getInstance().getGameLevel().equals(GameLevel.TWOPLAYERS.getGameLevel())) {
-            List<String> computeNodeMove = panelFunction.getComputerScoreNode();
-            if (!computeNodeMove.isEmpty()) {
-                // reset selected boardpane
-                Scene scene = App.scene;
-                BorderPane selectedBorderPane = (BorderPane) scene.lookup("#" + computeNodeMove.get(2) + "");
-                stylePanePlayer(selectedBorderPane, "ComputerPlay");
-
-                panelFunction.updatePanelStatus(computeNodeMove.get(2), PanelFlag.LOCKED.getPaneStaus());
-                panelFunction.updatePlayerStatus(computeNodeMove.get(2), GamePlayer.COMPUTER.getPlayerFlag());
-
-                Integer scorePoints = (Integer.parseInt(OtherHomeComponents.passRedScore.getText()) - 1);
-                successMessageForWonGame(scorePoints, "Too bad for you!", "Sorry you have lost the game, try again!!");
-
-                OtherHomeComponents.passRedScore.setText(scorePoints.toString());
-                //clear swollowed node
-                BorderPane swollowedNode = (BorderPane) scene.lookup("#" + computeNodeMove.get(1) + "");
-                swollowedNode.setCenter(null);
-                panelFunction.updatePanelStatus(swollowedNode.getId(), PanelFlag.EMPTY.getPaneStaus());
-                panelFunction.updatePlayerStatus(swollowedNode.getId(), GamePlayer.FREE.getPlayerFlag());
-                // reset parent pane
-                BorderPane borderPane = (BorderPane) scene.lookup("#" + computeNodeMove.get(0) + "");
-                panelFunction.updatePanelStatus(borderPane.getId(), PanelFlag.EMPTY.getPaneStaus());
-                panelFunction.updatePlayerStatus(borderPane.getId(), GamePlayer.FREE.getPlayerFlag());
-                borderPane.setCenter(null);
-            } else {
-                startAutoComputerMove(boardPane);
-            }
-        } else {
-            startAutoComputerMove(boardPane);
-        }
-    }
-
-    @Override
-    public void executeComputerMove(String boardPane) {
-        for (String neighbours : panelFunction.getComputerNeighbours(boardPane)) {
-            if (panelFunction.getPanelStatus(neighbours).equals(PanelFlag.EMPTY.getPaneStaus())) {
-                enableComputeMove(neighbours, boardPane);
-                break;
-            }
-        }
-    }
-
-    private void enableComputeMove(String targetPane, String parentPane) {
-        // reset selected boardpane
-        Scene scene = App.scene;
-        BorderPane selectedBorderPane = (BorderPane) scene.lookup("#" + targetPane + "");
-        stylePanePlayer(selectedBorderPane, "ComputerPlay");
-
-        panelFunction.updatePanelStatus(targetPane, PanelFlag.LOCKED.getPaneStaus());
-        panelFunction.updatePlayerStatus(targetPane, GamePlayer.COMPUTER.getPlayerFlag());
-        // reset parent pane
-        BorderPane borderPane = (BorderPane) scene.lookup("#" + parentPane + "");
-        panelFunction.updatePanelStatus(borderPane.getId(), PanelFlag.EMPTY.getPaneStaus());
-        panelFunction.updatePlayerStatus(borderPane.getId(), GamePlayer.FREE.getPlayerFlag());
-        borderPane.setCenter(null);
     }
 
     @Override
     public boolean isNodeNotEmpty(String node) {
         boolean result = false;
         for (String movablePanel : panelFunction.returnNodeDepth(node, panelFunction.getPlayerStatus(node))) {
-            if (panelFunction.getPlayerStatus(movablePanel).equals(GamePlayer.COMPUTER.getPlayerFlag())) {
+            if (panelFunction.getPlayerStatus(movablePanel).equals(GamePlayer.HUMAN_TWO.getPlayerFlag())) {
                 if (isNodeHasEmptyDepth(movablePanel)) {
                     result = true;
                     break;
@@ -311,11 +233,15 @@ public class enableBorderPaneHandler implements BorderPaneHandler, EventHandler<
 
     private void executeHumanNodeMove(String parentPane, String clickedPane) {
         if (Singleton.getInstance().getScoreFlag().equals(clickedPane)) {
-
-            Integer scorePoints = (Integer.parseInt(OtherHomeComponents.passBlueScore.getText()) - 1);
+            Integer scorePoints = 12;
+            if (panelFunction.getPlayerStatus(parentPane).equals(GamePlayer.HUMAN_TWO.getPlayerFlag()) || panelFunction.getPlayerStatus(parentPane).equals(GamePlayer.HUMAN_TWO_KING.getPlayerFlag())) {
+                scorePoints = (Integer.parseInt(OtherHomeComponents.passRedScore.getText()) - 1);
+                OtherHomeComponents.passRedScore.setText(scorePoints.toString());
+            } else {
+                scorePoints = (Integer.parseInt(OtherHomeComponents.passBlueScore.getText()) - 1);
+                OtherHomeComponents.passBlueScore.setText(scorePoints.toString());
+            }
             successMessageForWonGame(scorePoints, "Congratulations!", "You have won the game !!, try again");
-
-            OtherHomeComponents.passBlueScore.setText(scorePoints.toString());
             //clear swollowed node
             Scene scene = App.scene;
             BorderPane swollowedNode = (BorderPane) scene.lookup("#" + Singleton.getInstance().getFlagNode() + "");
@@ -339,19 +265,27 @@ public class enableBorderPaneHandler implements BorderPaneHandler, EventHandler<
     }
 
     private void interceptMovePlayerStatus(String parentPane, BorderPane borderPane) {
-        if (panelFunction.getPlayerStatus(parentPane).equals(GamePlayer.HUMANKING.getPlayerFlag()) || borderPane.getId().equals("boardPane1") || borderPane.getId().equals("boardPane2") || borderPane.getId().equals("boardPane3") || borderPane.getId().equals("boardPane4")) {
+        // check Board Pane for king
+        String[] humanKingBoardPane = {"boardPane1", "boardPane2", "boardPane3", "boardPane4"};
+        String[] computerKingBoardPane = {"boardPane29", "boardPane30", "boardPane31", "boardPane32"};
+        boolean isHumanKingBoardPane = Arrays.stream(humanKingBoardPane).anyMatch(borderPane.getId()::equals);
+        boolean isComputerKingBoardPane = Arrays.stream(computerKingBoardPane).anyMatch(borderPane.getId()::equals);
+        // check if board status if for king
+        if (panelFunction.getPlayerStatus(parentPane).equals(GamePlayer.HUMAN_ONE_KING.getPlayerFlag()) || isHumanKingBoardPane) {
             stylePanePlayer(passBoardPane, "HumanKing");
-            panelFunction.updatePlayerStatus(borderPane.getId(), GamePlayer.HUMANKING.getPlayerFlag());
+            panelFunction.updatePlayerStatus(borderPane.getId(), GamePlayer.HUMAN_ONE_KING.getPlayerFlag());
+        } else if (panelFunction.getPlayerStatus(parentPane).equals(GamePlayer.HUMAN_TWO_KING.getPlayerFlag()) || isComputerKingBoardPane) {
+            stylePanePlayer(passBoardPane, "ComputerKing");
+            panelFunction.updatePlayerStatus(borderPane.getId(), GamePlayer.HUMAN_TWO_KING.getPlayerFlag());
         } else {
-            stylePanePlayer(passBoardPane, "HumanPlayer");
-            panelFunction.updatePlayerStatus(borderPane.getId(), GamePlayer.HUMAN.getPlayerFlag());
+            // check human player position
+            if (panelFunction.getPlayerStatus(parentPane).equals(GamePlayer.HUMAN_TWO.getPlayerFlag())) {
+                stylePanePlayer(passBoardPane, "ComputerPlay");
+            } else {
+                stylePanePlayer(passBoardPane, "HumanPlayer");
+            }
+            panelFunction.updatePlayerStatus(borderPane.getId(), panelFunction.getPlayerStatus(parentPane));
         }
-    }
-
-    private void enableHighlightedNodes(String specifiedNode, String passBoardPane) {
-        Scene scene = App.scene;
-        BorderPane nodeToFind = (BorderPane) scene.lookup("#" + specifiedNode + "");
-        new enableBorderPaneHandler(nodeToFind, passBoardPane, panelFunction).createBorderPane();
     }
 
     private void successMessageForWonGame(Integer checkers, String messageTitle, String message) {
@@ -365,15 +299,6 @@ public class enableBorderPaneHandler implements BorderPaneHandler, EventHandler<
                 App.setRoot("views/GameLevels");
             } catch (IOException out) {
                 BoardHandling.writeErrors(out.getMessage());
-            }
-        }
-    }
-
-    private void startAutoComputerMove(String boardPane) {
-        for (String movablePanel : panelFunction.getComputerNeighbours(boardPane)) {
-            if (panelFunction.getPanelStatus(movablePanel).equals(PanelFlag.EMPTY.getPaneStaus())) {
-                enableComputeMove(movablePanel, boardPane);
-                break;
             }
         }
     }

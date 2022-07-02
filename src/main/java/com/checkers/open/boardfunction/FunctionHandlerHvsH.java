@@ -8,19 +8,19 @@ package com.checkers.open.boardfunction;
 
 import java.util.List;
 
-public interface FunctionHandler {
+public interface FunctionHandlerHvsH {
 
     void updatePanelStatus(String panelName, String panelFlag);
 
     String getPanelStatus(String panelName);
 
-    void StandingPanelStatus();
+    void humanStandingPanelStatus();
 
     void updatePlayerStatus(String panelName, String playerFlag);
 
     String getPlayerStatus(String panelName);
 
-    void StandingPlayerStatus();
+    void humanStandingPlayerStatus();
 
     List<String> getHumanNeighbours(String panelName);
 
@@ -40,7 +40,7 @@ public interface FunctionHandler {
 
     List<String> allComputerPlayersMovePane();
 
-    String getScoreNode(String clickedNode, String neighbourNode);
+    String getScoreNode(String clickedNode, String neighbourNode, String gamePlayerStatus);
 
     List<String> getComputerScoreNode();
 

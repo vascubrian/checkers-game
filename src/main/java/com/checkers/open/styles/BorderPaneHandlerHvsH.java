@@ -9,7 +9,7 @@ package com.checkers.open.styles;
 import java.util.List;
 import javafx.scene.layout.BorderPane;
 
-public interface BorderPaneHandler {
+public interface BorderPaneHandlerHvsH {
 
     void createBorderPane();
 
@@ -24,12 +24,6 @@ public interface BorderPaneHandler {
     void unlockHumanNeighbours();
 
     void unlockHumanKingNeighbours(String boardPane);
-
-    void createComputerMove(String passBoardPane);
-
-    void executeComputerMove(String boardPane);
-
-    void randomComputerMove(String boardPane);
 
     boolean isNodeNotEmpty(String nodeDepth);
 
