@@ -17,7 +17,7 @@ Either human or Human must execute all computer pieces to win.
 Human and computer player can jump over opponents only if there’s an unoccupied adjacent square 
 
 Either human or computer must execute all computer pieces to win.
-![image](https://user-images.githubusercontent.com/17808858/177003962-558b0df1-da83-4858-ae2c-975a7340910d.png)
+![image](https://user-images.githubusercontent.com/17808858/177004064-1d08ba81-2e24-4fe6-8686-84b0db7275cd.png)
 ## Checkers Game Board 
 User freindly board which seperates two players top and bottom 
 ![image](https://user-images.githubusercontent.com/17808858/177004012-15d625da-aed2-432d-b5f1-c5d599a6015c.png)
