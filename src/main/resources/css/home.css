@@ -1,5 +1,6 @@
 #panel_color{
-    -fx-background-color:#333333;
+    -fx-background-image:url('../images/bg_image.png');
+    -fx-background-size: cover;  
 }
 #gameBoard{
     -fx-background-color:white;
@@ -76,7 +77,8 @@
 }
 
 #gameLevelsPane{
-    -fx-background-color:#333333;
+  -fx-background-image:url('../images/bg_image.png');
+   -fx-background-size: cover;  
 }
 #gameLevelsPane .label{
     -fx-text-fill:white;
@@ -85,13 +87,13 @@
 }
 #gameButton{
     -fx-text-fill:white;
-    -fx-background-color:#ffcc00;
+    -fx-background-color:#40B5AD;
     -fx-font-size:20px;
     -fx-font-style:italic;
 }
 #gameButton:hover{
     -fx-text-fill:white;
-    -fx-background-color:red;
+    -fx-background-color:#40E0D0;
 }
 #viewRules{
     -fx-text-fill:white;
@@ -101,7 +103,7 @@
 }
 #viewRules:hover{
     -fx-text-fill:white;
-    -fx-background-color:#ffcc00;
+    -fx-background-color:#C70039;
 }
 
 #rulesPanel{

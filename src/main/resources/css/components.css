@@ -5,7 +5,7 @@
  * Edited by:
  */
 #panel_header_holder{
-    -fx-background-color:#ffcc00;
+    -fx-background-color:#40E0D0;
 }
 #panel_header_holder .label {
     -fx-font-size: 18px;
@@ -17,7 +17,7 @@
     -fx-text-fill:white;
 }
 #panel_bottom_holder{
-    -fx-background-color:#ffcc00; 
+    -fx-background-color:#40E0D0; 
 }
 
 #panel_bottom_holder .label {

@@ -22,6 +22,10 @@ Either human or computer must execute all computer pieces to win.
 User freindly board which seperates two players top and bottom 
 ![image](https://user-images.githubusercontent.com/17808858/177004012-15d625da-aed2-432d-b5f1-c5d599a6015c.png)
 
+
+https://user-images.githubusercontent.com/17808858/207856686-e3cf0f34-e2d3-4d26-b426-e39ae0ec2092.mov
+
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
