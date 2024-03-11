@@ -44,6 +44,7 @@ org.openjfx:javafx-maven-plugin:0.0.3:run
 ## Running the tests
 Run  checkers.open.BoardPaneTests
 ## Author
-* https://www.linkedin.com/in/brian-twijukye-61a44399/?originalSubdomain=ug - LinkedIn
+* https://www.linkedin.com/in/kasenene-brian/ - LinkedIn
+* https://www.freelancer.com/u/vascubrian - Freelancer
 * **Brian Twijukye** - *Application architecture and development*
 
